@@ -216,3 +216,83 @@ metrics.confusion_matrix(Y_test, Y_test_predict)
 # The combination of these two elements suggests that this is a rather poor
 # classifier.
 
+
+# ------------------------------------------------------------------------
+# PART 3
+# ------------------------------------------------------------------------
+
+# 2) Run the code to get the principal components, and create the 
+#	 scatterplot. Comment on what digits are easiest to separate 
+#	 and which one might be easily confounded, using only the 
+#	 information carried in the first two principal components.
+
+# Allow the graphs to be seen inline.
+%pylab inline
+#
+# Import and load the digit recognition dataset.
+from sklearn.datasets import load_digits
+digits = load_digits()
+#
+# Show the keys for each digit.
+print digits.keys()
+#
+# Show the target names.
+digits.target_names
+#
+# Create arrays for the digits and their data.
+X_digits, y_digits = digits.data, digits.target
+#
+# Show the shape of the X matrix.
+X_digits.shape
+#
+# Import the PCA.
+from sklearn.decomposition import PCA
+#
+# Get the first ten principal components of X_digits to create PCA matrix.
+estimator = PCA(n_components=10)
+X_pca = estimator.fit_transform(X_digits)
+#
+# Create the scatterplot.
+colors = ['black', 'blue', 'purple', 'yellow', 'white', 'red', 'lime', 'cyan', 'orange', 'gray']
+for i in xrange(len(colors)):
+    px = X_pca[:, 0][y_digits == i]
+    py = X_pca[:, 1][y_digits == i]
+    plt.scatter(px, py, c=colors[i])
+plt.legend(digits.target_names)
+plt.xlabel('First Principal Component')
+plt.ylabel('Second Principal Component')
+#
+# Based on how well their points are grouped and separated from the groups
+# for other digits, it looks as if 0, 1, 2, 3, 4, 6, and 9 would be easiest
+# to differentiate, whereas 5, 8, and possibly even 7 could be mistaken for
+# other numbers.
+
+
+# 3) Modify the scatterplot code to visualize the last two principal 
+#    components (8 and 9). Change the axes labels accordingly.
+colors = ['black', 'blue', 'purple', 'yellow', 'white', 'red', 'lime', 'cyan', 'orange', 'gray']
+for i in xrange(len(colors)):
+    px = X_pca[:, 7][y_digits == i]
+    py = X_pca[:, 8][y_digits == i]
+    plt.scatter(px, py, c=colors[i])
+plt.legend(digits.target_names)
+plt.xlabel('Eighth Principal Component')
+plt.ylabel('Ninth Principal Component')
+
+
+# 4) Comment on the ability of this new visualization to distinguish 
+#	 between images of digits. 
+#
+# This visualization is much worse for distinguishing between images, 
+# as the groupings are much looser than before and are poorly separated,
+# causing all the digits to be spread widely over roughly the same area.
+# In some cases (especially for distinguishing 3, 8, and 9, for example),
+# this visualization might be useful, but it would not be a good first 
+# choice most of the time.
+
+
+# 5) Save your version of notebook with all your comments and 
+#    scatterplots and submit to Drop Box and GitHub, in addition to 
+#    placing the .py download in your overall InClass7 assignment.
+#
+# This was completed above.
