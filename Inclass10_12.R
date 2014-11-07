@@ -31,6 +31,7 @@ identify branches. They will overlap somewhat but you will still be able to see.
 rect.hclust(hier_cl, k = 3)
 groups <- cutree(hier_cl, k = 3)
 groups
+
 """Comment: what are the iris plants that seem to be mostly in first cluster? How 
 about the second cluster? How about the third cluster? "
 
