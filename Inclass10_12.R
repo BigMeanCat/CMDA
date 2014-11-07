@@ -9,7 +9,6 @@
 “names” of the variables, the first 6 observations and the summaries of the 
 variables. "
 data(iris)
-names(iris)
 
 names(iris)
 head(iris)
