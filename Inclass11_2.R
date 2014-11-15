@@ -1,7 +1,7 @@
 # ============================================
 # David Harter
 # CMDA 3654
-# In-class Assignment 11_2
+# In-class Assignment 11
 # November 17, 2014
 # ============================================
 
@@ -9,6 +9,7 @@ library(class)
 library(ROCR)
 library(rpart)
 library(rpart.plot)
+library(e1071)
 
 """Use mtcars R dataset provided by the data(mtcars) command"
 data(mtcars)
@@ -106,6 +107,16 @@ z to go to 0.  Though this reproduced the response set perfectly, it did not giv
 us any information on what variables were important."
 
 
+# Train the Naive Bayes model
+fit <- naiveBayes(as.formula(f), data = mtcars)
+
+naivB_pred <- predict(fit, mtcars, type = 'raw')
+evalnb <- prediction(naivB_pred[,2], mtcars$am)
+evalnb
+
+"""The Naive-Bayes model was an excellent predictor of the type of transmission each
+car might have, matching the actual results in every case."
+
 
 
 """Calculate and compare the AUC and system time for each algorithm. Which one does
@@ -124,11 +135,18 @@ auc_calc <- performance(evallog,'auc')
 auc_calc@y.values
 system.time(logam = glm(f, data = mtcars, family = "binomial"))
 
+auc_calc <- performance(evalnb,'auc')
+auc_calc@y.values
+system.time(fit <- naiveBayes(as.formula(f), data = mtcars))
+
 """All three of the models had high performance (~ 1), but kNN was the only model with a
-perfect score of one.  The other two were tied at 0.9979757.
+perfect score of one.  The decision tree and logistic model were tied at 0.9979757, and
+the Naive-Bayes method came in a close a third at 0.9392713.
 
 Timing all three models, kNN was no doubt the fastest, performing its operations in an
-almost immeasurably short time.  The decision tree was a bit slower, but not by much.
+almost immeasurably short time.  The decision tree and Naive-Bayes model were a bit 
+slower, but not by much.
+
 For the logistic model, however, an error message came back which claimed that the
 argument (logam = glm...) was unused, reflecting the warning message we ran into
-earlier.  Clearly a logistic model is not useful for this data."
+earlier.  Clearly, a logistic model would not be our first choice when examining this data."
